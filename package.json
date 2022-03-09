@@ -1,0 +1,20 @@
+{
+  "name": "hotel-backend",
+  "version": "1.0.0",
+  "description": "This is the backend for the hotel test project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hotel",
+    "backend",
+    "test"
+  ],
+  "author": "Kalib Hackin",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  }
+}
