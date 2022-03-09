@@ -20,7 +20,7 @@ const getHotel = (req, res) => {
 		if (error) {
 			throw error;
 		} else {
-			row.length > 0 ? res.status(201).json(row) : res.status(406).json({
+			row.length > 0 ? res.status(200).json(row) : res.status(406).json({
 				message: `It doesn't exist an hotel with the id ${id}.`
 			});
 		}
@@ -31,11 +31,10 @@ const createHotel = (req, res) => {
 	const hotel = req.body;
 
 	if (hotel.name && hotel.category && hotel.price && hotel.photos) {
-		connection.query('INSERT INTO hotel SET ?', hotel, (error, row) => {
+		connection.query('INSERT INTO hotel SET ?', hotel, (error) => {
 			if (error) {
 				throw error;
 			} else {
-				console.log(row);
 				res.status(201).json({
 					message: `${hotel.name} was created successfully.`
 				});
@@ -61,7 +60,7 @@ const updateHotel = (req, res) => {
 					? res.status(406).json({
 							message: `It doesn't exist an hotel with the id ${id}.`
 						})
-					: res.status(201).json({
+					: res.status(200).json({
 							message: `${hotel.name} was updated successfully.`
 						});
 			}
@@ -73,4 +72,23 @@ const updateHotel = (req, res) => {
 	}
 };
 
-module.exports = { getAllHotels, getHotel, createHotel, updateHotel };
+const deleteHotel = (req, res) => {
+	const { id } = req.params;
+
+	connection.query(`DELETE FROM hotel WHERE id = ${id}`, (error, result) => {
+		if (error) {
+			throw error;
+		} else {
+			console.log(result);
+			result.affectedRows === 0
+				? res.status(406).json({
+						message: `It doesn't exist an hotel with the id ${id}.`
+					})
+				: res.status(200).json({
+						message: 'The hotel was deleted successfully.'
+					});
+		}
+	});
+};
+
+module.exports = { getAllHotels, getHotel, createHotel, updateHotel, deleteHotel };
