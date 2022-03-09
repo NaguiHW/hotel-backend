@@ -93,7 +93,7 @@ const deleteHotel = (req, res) => {
 
 const filterHotelBy = (req, res) => {
 	const { type, value } = req.body;
-	if (type === 'category') {
+	if (type === 'category' && value >= 1 && value <=5) {
 		connection.query(`SELECT * FROM hotel WHERE ${type} = ${value}`, (error, row) => {
 			if (error) {
 				throw error;
@@ -103,13 +103,11 @@ const filterHotelBy = (req, res) => {
 				});
 			}
 		});
-	}
-	if (type === 'qualification' && value >= 1 && value <=5) {
+	} else if (type === 'qualification' && value >= 1 && value <=5) {
 		connection.query(`SELECT h.*, q.hotel_id, ROUND(AVG(q.rating)) AS average_rating FROM qualification AS q INNER JOIN hotel as h ON h.id = q.hotel_id GROUP BY hotel_id HAVING average_rating = ${value}`, (error, row) => {
 			if (error) {
 				throw error;
 			} else {
-				console.log(row);
 				row.length > 0 ? res.status(200).json(row) : res.status(406).json({
 					message: `It doesn't exist hotels with the calification ${value}.`
 				});
@@ -122,4 +120,21 @@ const filterHotelBy = (req, res) => {
 	}
 };
 
-module.exports = { getAllHotels, getHotel, createHotel, updateHotel, deleteHotel, filterHotelBy };
+const orderHotelByPrice = (req, res) => {
+	const { order } = req.params;
+	if (order === 'a-z' || order === 'z-a') {
+		connection.query(`SELECT * FROM hotel ORDER BY price ${order === 'a-z' ? 'ASC' : 'DESC'}`, (error, result) => {
+			if (error) {
+				throw error;
+			} else {
+				res.status(200).json(result);
+			}
+		});
+	} else {
+		res.status(406).json({
+			message: "The given order is not valid."
+		});
+	}
+}
+
+module.exports = { getAllHotels, getHotel, createHotel, updateHotel, deleteHotel, filterHotelBy, orderHotelByPrice };
