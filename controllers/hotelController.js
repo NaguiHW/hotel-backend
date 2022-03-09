@@ -15,13 +15,36 @@ const getAllHotels = (req, res) => {
 
 const getHotel = (req, res) => {
 	const { id } = req.params;
+
 	connection.query(`SELECT * FROM hotel WHERE id = ${id}`, (error, row) => {
 		if (error) {
 			throw error;
 		} else {
-			res.status(201).json(row);
+			row.length > 0 ? res.status(201).json(row) : res.status(406).json({
+				message: `It doesn't exist an hotel with the id ${id}`
+			})
 		}
 	});
 };
 
-module.exports = {getAllHotels, getHotel};
+const createHotel = (req, res) => {
+	const hotel = req.body;
+
+	if (hotel.name && hotel.category && hotel.price && hotel.photos) {
+		connection.query('INSERT INTO hotel SET ?', hotel, (error, row) => {
+			if (error) {
+				throw error;
+			} else {
+				res.status(201).json({
+					message: `Hotel ${hotel.name} created successfully.`
+				});
+			}
+		});
+	} else {
+		res.status(406).json({
+			message: "1 or more of the parameters are missing."
+		})
+	}
+};
+
+module.exports = { getAllHotels, getHotel, createHotel };
