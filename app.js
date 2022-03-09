@@ -8,14 +8,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.get('/', (req, res) => {
-	res.status(200).json({
-		text: "Hotel API"
-	});
-});
-
 const hotelRoutes = require('./routes/hotel');
+const qualificationRoutes = require('./routes/qualification');
 
 app.use('/hotel', hotelRoutes);
+app.use('/qualification', qualificationRoutes);
 
 app.listen(port);
