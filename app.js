@@ -1,15 +1,21 @@
 const express = require("express");
-const mysql = require("mysql");
+require('dotenv').config();
 
-const port = process.env.PORT || "8000";
+const port = "8000";
 
 const app = express();
 
-const connection = mysql.createConnection({
-	host: process.env.HOST,
-	user: process.env.USER,
-	password: process.env.PASSWORD,
-	database: process.env.DATABASE,
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
+app.get('/', (req, res) => {
+	res.status(200).json({
+		text: "Hotel API"
+	});
 });
+
+const hotelRoutes = require('./routes/hotel');
+
+app.use('/hotel', hotelRoutes);
 
 app.listen(port);
