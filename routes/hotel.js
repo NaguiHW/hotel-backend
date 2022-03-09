@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllHotels, getHotel, createHotel, updateHotel } = require('../controllers/hotelController');
+const { getAllHotels, getHotel, createHotel, updateHotel, deleteHotel } = require('../controllers/hotelController');
 const router = express.Router();
 
 // Hotels
@@ -13,6 +13,9 @@ router.get('/:id', getHotel);
 router.post('/', createHotel);
 
 // UPDATE
-router.put('/:id', updateHotel)
+router.put('/:id', updateHotel);
+
+// DELETE
+router.delete('/:id', deleteHotel);
 
 module.exports = router;
