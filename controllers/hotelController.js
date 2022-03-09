@@ -21,8 +21,8 @@ const getHotel = (req, res) => {
 			throw error;
 		} else {
 			row.length > 0 ? res.status(201).json(row) : res.status(406).json({
-				message: `It doesn't exist an hotel with the id ${id}`
-			})
+				message: `It doesn't exist an hotel with the id ${id}.`
+			});
 		}
 	});
 };
@@ -35,16 +35,42 @@ const createHotel = (req, res) => {
 			if (error) {
 				throw error;
 			} else {
+				console.log(row);
 				res.status(201).json({
-					message: `Hotel ${hotel.name} created successfully.`
+					message: `${hotel.name} was created successfully.`
 				});
 			}
 		});
 	} else {
 		res.status(406).json({
 			message: "1 or more of the parameters are missing."
-		})
+		});
 	}
 };
 
-module.exports = { getAllHotels, getHotel, createHotel };
+const updateHotel = (req, res) => {
+	const { id } = req.params;
+	const hotel = req.body;
+
+	if (hotel.name || hotel.category || hotel.price || hotel.photos) {
+		connection.query(`UPDATE hotel SET ? WHERE id = ${id}`, hotel, (error, result) => {
+			if (error) {
+				throw error;
+			} else {
+				result.changedRows === 0
+					? res.status(406).json({
+							message: `It doesn't exist an hotel with the id ${id}.`
+						})
+					: res.status(201).json({
+							message: `${hotel.name} was updated successfully.`
+						});
+			}
+		});
+	} else {
+		res.status(406).json({
+			message: "You didn't pass any parameter."
+		});
+	}
+};
+
+module.exports = { getAllHotels, getHotel, createHotel, updateHotel };
