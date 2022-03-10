@@ -4,14 +4,10 @@ const connectionData = require("./connectionData");
 const connection = mysql.createConnection(connectionData);
 
 const getAllHotels = (req, res) => {
-	console.log("yes");
-	res.setHeader('Content-Type', 'application/json')
-	console.log(res.header);
 	connection.query('SELECT h.*, q.hotel_id, ROUND(AVG(q.rating)) AS average_rating FROM qualification AS q INNER JOIN hotel as h ON h.id = q.hotel_id GROUP BY hotel_id', (error, rows) => {
 		if (error) {
 			throw error;
 		} else {
-			console.log(res);
 			res.status(200).json(rows);
 		}
 	});
@@ -83,7 +79,6 @@ const deleteHotel = (req, res) => {
 		if (error) {
 			throw error;
 		} else {
-			console.log(result);
 			result.affectedRows === 0
 				? res.status(406).json({
 						message: `It doesn't exist an hotel with the id ${id}.`

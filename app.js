@@ -1,18 +1,9 @@
 const express = require("express");
-const mysql = require("mysql");
-const connectionData = require("./controllers/connectionData");
-const connection = mysql.createConnection(connectionData);
+require('dotenv').config();
 
-connection.connect(error => {
-	if (error) {
-		throw error;
-	} else {
-		console.log('Success');
-	}
-});
-connection.end();
+const environment = process.env.NODE_ENV || 'development';
 
-const port = "3306";
+const port = environment === 'development' ? process.env.LOCAL_DB_PORT : "3000";
 
 const app = express();
 
@@ -25,6 +16,4 @@ const qualificationRoutes = require('./routes/qualification');
 app.use('/hotel', hotelRoutes);
 app.use('/qualification', qualificationRoutes);
 
-app.listen(port, () => {
-	console.log(`Listening on port: ${port}`);
-});
+app.listen(port);
