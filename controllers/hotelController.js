@@ -79,7 +79,6 @@ const deleteHotel = (req, res) => {
 		if (error) {
 			throw error;
 		} else {
-			console.log(result);
 			result.affectedRows === 0
 				? res.status(406).json({
 						message: `It doesn't exist an hotel with the id ${id}.`

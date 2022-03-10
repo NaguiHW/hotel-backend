@@ -1,7 +1,9 @@
 const express = require("express");
 require('dotenv').config();
 
-const port = "8000";
+const environment = process.env.NODE_ENV || 'development';
+
+const port = environment === 'development' ? process.env.LOCAL_DB_PORT : "3000";
 
 const app = express();
 
