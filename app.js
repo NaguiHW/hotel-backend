@@ -14,8 +14,10 @@ app.use(express.urlencoded({extended: false}));
 
 const hotelRoutes = require('./routes/hotel');
 const qualificationRoutes = require('./routes/qualification');
+const averageQualification = require('./routes/averageQualification');
 
 app.use('/hotel', hotelRoutes);
 app.use('/qualification', qualificationRoutes);
+app.use('/average_qualification', averageQualification);
 
 app.listen(port);

@@ -121,8 +121,8 @@ const filterHotelBy = (req, res) => {
 
 const orderHotelByPrice = (req, res) => {
 	const { order } = req.params;
-	if (order === 'a-z' || order === 'z-a') {
-		connection.query(`SELECT * FROM hotel ORDER BY price ${order === 'a-z' ? 'ASC' : 'DESC'}`, (error, result) => {
+	if (order === 'asc' || order === 'desc') {
+		connection.query(`SELECT * FROM hotel ORDER BY price ${order === 'asc' ? 'ASC' : 'DESC'}`, (error, result) => {
 			if (error) {
 				throw error;
 			} else {
